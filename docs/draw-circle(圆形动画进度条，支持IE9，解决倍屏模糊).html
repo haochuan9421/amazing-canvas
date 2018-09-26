@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>drawCircle</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="renderer" content="webkit">
+  <style>
+    body{
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="myCanvas"></canvas>
+</body>
+<script>
+  function drawCircle (ele, percent, size, lineWidth, mainColor, bgColor, textColor, fontSize) {
+    /*
+      @ele: canvas的DOM元素
+      @percent：绘制圆环百分比, 范围[0, 100]
+      @size: 圆环大小, 像素
+      @mainColor: 绘制圆环的前景色
+      @bgColor: 绘制圆环的背景色
+      @textColor: 文字颜色
+    */
+
+    // 设置参数默认值(这种写法可以兼容IE)
+    if (!arguments[2]) size = 160
+    if (!arguments[3]) lineWidth = 16
+    if (!arguments[4]) mainColor = 'skyblue'
+    if (!arguments[5]) bgColor = '#eee'
+    if (!arguments[6]) fontSize = 40
+
+    var ctx = ele.getContext('2d')
+    ele.style.width = ele.style.height = size + 'px'
+    ele.width = ele.height = window.devicePixelRatio ? size * window.devicePixelRatio : size // 解决倍屏中canvas绘制模糊的问题，IE11以下不支持devicePixelRatio属性
+    var centerX = ele.width / 2 // 中心点X轴坐标
+    var centerY = ele.height / 2 // 中心点Y轴坐标
+    var step = Math.PI * 2 / 100 // 1%的弧度角
+    var radius = (ele.width - lineWidth) / 2 // 半径大小
+
+    // 绘制背景圆圈
+    function bgCircle () {
+      ctx.strokeStyle = bgColor
+      ctx.lineWidth = lineWidth
+      ctx.lineCap = 'round'
+      ctx.beginPath()
+      ctx.arc(centerX, centerY, radius, 0, Math.PI * 2, false)
+      ctx.stroke()
+    }
+
+    // 绘制运动圆环
+    function mainCircle (n) {
+      ctx.strokeStyle = mainColor
+      ctx.beginPath()
+      ctx.arc(centerX, centerY, radius, -Math.PI / 2, -Math.PI / 2 + n * step, false)
+      ctx.stroke()
+    }
+
+    // 绘制文字
+    function text (n) {
+      ctx.fillStyle = textColor
+      ctx.font = fontSize + 'px Helvetica'
+      ctx.textAlign = 'center'
+      ctx.textBaseline = 'middle'
+      ctx.fillText(n + '%', centerX, centerY)
+    }
+
+    // 逐帧绘制，递归递增
+    function drawFrame (n) {
+      if (n <= percent) {
+        ctx.clearRect(0, 0, ele.width, ele.height)
+        bgCircle()
+        mainCircle(n)
+        text(n)
+        setTimeout(function () {
+          drawFrame(n + 1)
+        }, 10)
+      }
+    }
+    
+    // 调用
+    drawFrame(0)
+  }
+
+  // 调用
+  drawCircle(document.getElementById('myCanvas'), 66)
+</script>
+
+</html>

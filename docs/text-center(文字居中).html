@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>text-center</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="renderer" content="webkit">
+  <style>
+    body{
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="myCanvas" width="320" height="320"></canvas>
+</body>
+<script>
+  var ele = document.getElementById('myCanvas')
+  var ctx = ele.getContext('2d')
+  ctx.fillStyle="#ace";
+  ctx.fillRect(0,0,320,320);
+
+  ctx.beginPath();
+  ctx.strokeStyle="blue";
+  ctx.moveTo(160,0);
+  ctx.lineTo(160,320);
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.strokeStyle="red";
+  ctx.moveTo(0,160);
+  ctx.lineTo(320,160);
+  ctx.stroke();
+
+  ctx.fillStyle = '#333'
+  ctx.font = '40px Arial'
+  ctx.textAlign="center";
+  ctx.textBaseline="middle";
+  ctx.fillText('X', 160, 160);
+</script>
+
+</html>
