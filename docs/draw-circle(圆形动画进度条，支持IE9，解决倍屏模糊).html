@@ -18,12 +18,22 @@
 </body>
 <script>
   function drawCircle (ele, percent, size, lineWidth, mainColor, bgColor, textColor, fontSize) {
+    /*
+      @ele: canvas的DOM元素
+      @percent：绘制圆环百分比, 范围[0, 100]
+      @size: 圆环大小, 像素
+      @mainColor: 绘制圆环的前景色
+      @bgColor: 绘制圆环的背景色
+      @textColor: 文字颜色
+    */
+    // 设置参数默认值(这种写法可以兼容IE)
     if (!arguments[2]) size = 160
     if (!arguments[3]) lineWidth = 16
     if (!arguments[4]) mainColor = 'skyblue'
     if (!arguments[5]) bgColor = '#eee'
     if (!arguments[6]) textColor = '#333'
     if (!arguments[7]) fontSize = 24
+
     var ctx = ele.getContext('2d')
     ele.style.width = ele.style.height = size + 'px'
     ele.width = ele.height = window.devicePixelRatio ? size * window.devicePixelRatio : size // 解决倍屏中canvas绘制模糊的问题，IE11以下不支持devicePixelRatio属性
@@ -69,11 +79,9 @@
         }, 10)
       }
     }
-
     // 调用
     drawFrame(0)
   }
-
   // 调用
   drawCircle(document.getElementById('myCanvas'), 66)
 </script>
