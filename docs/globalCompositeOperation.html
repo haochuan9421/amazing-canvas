@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>globalCompositeOperation</title>
+  </head>
+  <body>
+    <canvas id="canvas" width="400" height="400"></canvas>
+  </body>
+  <script>
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    var image = new Image(); //定义一个图片对象
+    image.src = './img/Base.jpg';
+    image.onload = function() {
+      // 绘制图片
+      ctx.drawImage(image, 0, 0);
+      // 改变混合方式
+      ctx.globalCompositeOperation = 'destination-out';
+      // 绘制文本
+      ctx.font = 'bold 40px SimHei, STHeiti';
+      ctx.fillText('用眼看世界', 35, 140);
+    };
+  </script>
+</html>
