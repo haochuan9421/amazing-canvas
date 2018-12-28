@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <canvas id="myCanvas" width="500" height="500"></canvas>
+  </body>
+  <script>
+    var canvas = document.getElementById('myCanvas');
+    var ctx = canvas.getContext('2d');
+    var width = canvas.width;
+    var height = canvas.height;
+
+    var rad = (Math.PI * 2) / 100; //将360度分成100份，那么每一份就是rad度
+    var num = 0;
+    var progressNum = 80;
+    initCanvas();
+
+    // 绘制底部圆圈
+    function bottomCircle() {
+      ctx.save();
+      ctx.beginPath();
+      ctx.lineWidth = 20;
+      ctx.strokeStyle = '#323d58';
+      ctx.arc(width / 2, height / 2, 150, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.closePath(); //路径结束
+      ctx.restore();
+    }
+    // 绘制进度条
+    function progress(num) {
+      ctx.save(); //save和restore可以保证样式属性只运用于该段canvas元素
+      ctx.beginPath();
+      ctx.lineWidth = 20;
+      ctx.lineCap = 'round';
+      let gradient = ctx.createLinearGradient(width / 2, height / 2 - 150, width / 2, height / 2 + 150);
+      gradient.addColorStop(0, '#14B9f9');
+      gradient.addColorStop(1, '#2d6cf6');
+      ctx.strokeStyle = gradient;
+      ctx.arc(width / 2, height / 2, 150, -Math.PI / 2, -Math.PI / 2 + num * rad);
+      ctx.stroke();
+      ctx.closePath(); //路径结束
+      ctx.restore();
+    }
+    // 绘制发光小圆点
+    function point(num) {
+      ctx.save();
+      ctx.beginPath();
+      ctx.lineWidth = 50;
+      ctx.lineCap = 'round';
+      ctx.strokeStyle = '#375ef1';
+      ctx.shadowBlur = 15;
+      ctx.shadowColor = '#375ef1';
+      ctx.filter = 'blur(1.5px)';
+      ctx.arc(width / 2, height / 2, 150, -Math.PI / 2 + num * rad, -Math.PI / 2 + num * rad);
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.lineWidth = 25;
+      ctx.lineCap = 'round';
+      ctx.strokeStyle = '#ffffff';
+      ctx.filter = 'none';
+      ctx.shadowBlur = 30;
+      ctx.shadowColor = '#ffffff30';
+      ctx.arc(width / 2, height / 2, 150, -Math.PI / 2 + num * rad, -Math.PI / 2 + num * rad);
+      ctx.stroke();
+      ctx.closePath(); //路径结束
+      ctx.restore();
+    }
+    //百分比文字绘制
+    function text(num) {
+      ctx.save();
+      ctx.fillStyle = 'white';
+      ctx.font = '60px Arial';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      //绘制字体，并且指定位置
+      ctx.fillText(Number(num).toFixed(0) + '%', width / 2, height / 2);
+      ctx.stroke(); //执行绘制
+      ctx.restore();
+    }
+    // 起动动画
+    function initCanvas() {
+      if (num < progressNum) {
+        requestAnimationFrame(initCanvas); //执行动画并请求浏览器在下一次重绘之前调用指定的函数来更新动画
+      }
+      ctx.clearRect(0, 0, width, height);
+      bottomCircle();
+      progress(num);
+      point(num);
+      text(num);
+      num += 0.5;
+    }
+  </script>
+  <style>
+    body {
+      background: #021031;
+      color: #0f5afd;
+    }
+  </style>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>lineDashOffset</title>
+  </head>
+  <body>
+    <canvas id="canvas" width="400" height="400"></canvas>
+  </body>
+  <script>
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    // 偏移大小
+    var offset = 0;
+    // 绘制
+    function draw() {
+      ctx.clearRect(0, 0, 400, 400);
+      ctx.setLineDash([8, 4]); // 设置虚线样式4代表透明部分
+      ctx.lineDashOffset = offset;
+      ctx.shadowBlur = 5;
+      ctx.shadowColor = 'red';
+      ctx.shadowOffsetX = 5;
+      ctx.shadowOffsetY = 5;
+      ctx.strokeStyle = 'green';
+      ctx.strokeRect(2, 2, 236, 116);
+    }
+    function run() {
+      offset += 0.5;
+      if (offset > 24) {
+        offset = 0;
+      }
+      draw();
+      requestAnimationFrame(run);
+    }
+    run();
+  </script>
+</html>
